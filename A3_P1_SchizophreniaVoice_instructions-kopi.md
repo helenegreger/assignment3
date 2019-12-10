@@ -407,37 +407,8 @@ write.csv(df, "df_2.csv")
 
 model_iqr <- lmer(iqr ~ diagnosis + (1 + diagnosis|uPairID), data = df, REML = F)
 #This makes us able to see the two studies each 
-summary(model_iqr)
-```
+m_iqr <- summary(model_iqr)
 
-    ## Linear mixed model fit by maximum likelihood  ['lmerMod']
-    ## Formula: iqr ~ diagnosis + (1 + diagnosis | uPairID)
-    ##    Data: df
-    ## 
-    ##      AIC      BIC   logLik deviance df.resid 
-    ##   4437.0   4470.3  -2212.5   4425.0     1890 
-    ## 
-    ## Scaled residuals: 
-    ##     Min      1Q  Median      3Q     Max 
-    ## -5.5564 -0.2575 -0.1108  0.0149 14.3060 
-    ## 
-    ## Random effects:
-    ##  Groups   Name        Variance Std.Dev. Corr 
-    ##  uPairID  (Intercept) 0.9574   0.9785        
-    ##           diagnosis1  1.0517   1.0255   -0.99
-    ##  Residual             0.4985   0.7060        
-    ## Number of obs: 1896, groups:  uPairID, 122
-    ## 
-    ## Fixed effects:
-    ##             Estimate Std. Error t value
-    ## (Intercept)  0.13879    0.09359   1.483
-    ## diagnosis1  -0.26907    0.10056  -2.676
-    ## 
-    ## Correlation of Fixed Effects:
-    ##            (Intr)
-    ## diagnosis1 -0.962
-
-``` r
 #We try with the unique ID
 model_2 <- lmer(iqr ~ diagnosis + (1|uID), data = df, REML = F)
 summary(model_2)
@@ -555,7 +526,6 @@ summary(model_speechrate)
 ``` r
 #We will do for pause duration
 model_pause_dur <- lmer(pause_dur ~ diagnosis + (1 + diagnosis|uPairID), data = df, REML = F)
-
 summary(model_pause_dur)
 ```
 
@@ -585,6 +555,63 @@ summary(model_pause_dur)
     ## Correlation of Fixed Effects:
     ##            (Intr)
     ## diagnosis1 -0.585
+
+``` r
+# get the confidence intervals
+round(confint(model_iqr),2)
+```
+
+    ## Computing profile confidence intervals ...
+
+    ##             2.5 % 97.5 %
+    ## .sig01       0.86   1.13
+    ## .sig02      -1.00  -0.98
+    ## .sig03       0.89   1.19
+    ## .sigma       0.68   0.73
+    ## (Intercept) -0.05   0.32
+    ## diagnosis1  -0.47  -0.07
+
+``` r
+round(confint(model_speakingtime),2)
+```
+
+    ## Computing profile confidence intervals ...
+
+    ##             2.5 % 97.5 %
+    ## .sig01       0.41   0.59
+    ## .sig02      -0.74  -0.42
+    ## .sig03       0.52   0.77
+    ## .sigma       0.83   0.89
+    ## (Intercept) -0.22  -0.01
+    ## diagnosis1   0.09   0.37
+
+``` r
+round(confint(model_speechrate),2)
+```
+
+    ## Computing profile confidence intervals ...
+
+    ##             2.5 % 97.5 %
+    ## .sig01       0.45   0.61
+    ## .sig02      -0.70  -0.40
+    ## .sig03       0.59   0.82
+    ## .sigma       0.57   0.61
+    ## (Intercept)  3.07   3.28
+    ## diagnosis1  -0.40  -0.11
+
+``` r
+round(confint(model_pause_dur),2)
+```
+
+    ## Computing profile confidence intervals ...
+
+    ##             2.5 % 97.5 %
+    ## .sig01       1.35   1.87
+    ## .sig02      -0.72  -0.35
+    ## .sig03       1.70   2.52
+    ## .sigma       2.26   2.42
+    ## (Intercept)  2.43   3.09
+    ## diagnosis1  -0.58   0.33
 
 For assignment A3\_P2
 
